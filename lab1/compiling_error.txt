@@ -1,0 +1,10 @@
+/tmp/ccHMQguX.o: In function `main':
+LCA.cpp:(.text+0xb9): undefined reference to `LCAImplementation::BT<int>::getRoot()'
+LCA.cpp:(.text+0x281): undefined reference to `LCAImplementation::BT<int>::~BT()'
+LCA.cpp:(.text+0x2c0): undefined reference to `LCAImplementation::BT<int>::~BT()'
+LCA.cpp:(.text+0x2d1): undefined reference to `LCAImplementation::BT<int>::~BT()'
+/tmp/ccHMQguX.o: In function `LCAImplementation::BT<int>::BT(std::vector<int, std::allocator<int> >)':
+LCA.cpp:(.text._ZN17LCAImplementation2BTIiEC2ESt6vectorIiSaIiEE[_ZN17LCAImplementation2BTIiEC5ESt6vectorIiSaIiEE]+0xca): undefined reference to `LCAImplementation::Node<int>::~Node()'
+LCA.cpp:(.text._ZN17LCAImplementation2BTIiEC2ESt6vectorIiSaIiEE[_ZN17LCAImplementation2BTIiEC5ESt6vectorIiSaIiEE]+0x120): undefined reference to `LCAImplementation::Node<int>::~Node()'
+LCA.cpp:(.text._ZN17LCAImplementation2BTIiEC2ESt6vectorIiSaIiEE[_ZN17LCAImplementation2BTIiEC5ESt6vectorIiSaIiEE]+0x131): undefined reference to `LCAImplementation::Node<int>::~Node()'
+collect2: error: ld returned 1 exit status

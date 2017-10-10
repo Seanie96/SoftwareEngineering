@@ -1,46 +1,15 @@
-#include <iostream>
-#include <vector>
-#include <iomanip>
-
-using namespace std;
-
-namespace LCAImplementation{
-  template <class T>
-  class Node{
-
-  public:
-    Node(T);
-    ~Node();
-    int compareTo(Node*);
-    Node<T>* right = NULL;
-    Node<T>* left = NULL;
-    T val;
-  };
-
-  template <class T>
-  class BT{
-
-  public:
-    BT(vector<T>);
-    ~BT();
-    Node<T>* LCA(T, T);
-    Node<T>* root = NULL;
-    bool valueExists(T, Node<T>*);
-    vector<T> list;
-    bool listFromNodeToRoot(T, Node<T>*);
-    void postorder(Node<T>*, int);
-    Node<T>* getRoot();
-  };
+#include "LCA.h"
+using namespace LCAImplementation;
 
   template<class T>
-  Node<T>::Node(T value) {
+  LCAImplementation::Node<T>::Node(T value) {
     val = value;
     right = NULL;
     left = NULL;
   }
 
   template<class T>
-  int Node<T>::compareTo(Node<T> *node) {
+  int LCAImplementation::Node<T>::compareTo(Node<T> *node) {
     if(node->val < val) {
       return -1;
     } else if(node->val > val) {
@@ -51,9 +20,9 @@ namespace LCAImplementation{
   }
 
   template<class T>
-  BT<T>::BT(vector<T> vals) {
+  LCAImplementation::BT<T>::BT(vector<T> vals) {
     Node<T> tmp (vals[0]);
-    for(int i = 1; i < vals.size(); i++) {
+    for(unsigned i = 1; i < vals.size(); i++) {
       bool foundPosition = false;
       Node<T>* node = root;
       while(!foundPosition) {
@@ -72,17 +41,26 @@ namespace LCAImplementation{
   }
 
   template<class T>
-  Node<T>* BT<T>::LCA(T val1, T val2) {
+  Node<T>* LCAImplementation::BT<T>::LCA(T val1, T val2) {
     if(valueExists(val1, root) && valueExists(val2, root)) {
       listFromNodeToRoot(val1, root);
-      vector<T> list1 = list;
+      vector<Node<T>*> list1 = list;
       listFromNodeToRoot(val2, root);
-      vector<T> list2 = list;
+      vector<Node<T>*> list2 = list;
+
+      for(unsigned i = 0; i < list1.size(); i++) {
+        for(unsigned j = 0; j < list2.size(); j++) {
+          if(list1[i]->val == list2[j]->val) {
+            return  list[i];
+          }
+        }
+      }
     }
+    return NULL;
   }
 
   template<class T>
-  bool BT<T>::valueExists(T val, Node<T>* node) {
+  bool LCAImplementation::BT<T>::valueExists(T val, Node<T>* node) {
     if(node != NULL) {
       if(val == node->val) {
         return true;
@@ -99,23 +77,25 @@ namespace LCAImplementation{
   }
 
 template<class T>
-  bool BT<T>::listFromNodeToRoot(T val, Node<T>* node) {
+  bool LCAImplementation::BT<T>::listFromNodeToRoot(T val, Node<T>* node) {
     if(val == node->val) {
-      list = vector<T>();
-      list.push_back(val);
+      list = vector<Node<T>*>();
+      list.push_back(node);
       return true;
     } else {
       bool func1 = listFromNodeToRoot(val, node->left);
       bool func2 = listFromNodeToRoot(val, node->right);
       if(func1 || func2) {
-        list.push_back(val);
+        list.push_back(node);
         return true;
+      } else  {
+        return false;
       }
     }
   }
 
   template<class T>
-  void postorder(Node<T>* p, int indent=0) {
+  void LCAImplementation::BT<T>::postorder(Node<T>* p, int indent) {
     if(p != NULL) {
         if(p->left) postorder(p->left, indent+4);
         if(p->right) postorder(p->right, indent+4);
@@ -125,20 +105,19 @@ template<class T>
         cout << p->val << "\n ";
     }
   }
-}
 
 
 int main() {
   vector<int> l = vector<int>();
   for(int i = 0; i < 25; i++) {
-    int num = rand() % 1000;
+    int num = (int)(rand() % 1000);
     l.push_back(num);
   }
   LCAImplementation::BT<int> binary_tree (l);
   binary_tree.postorder(binary_tree.getRoot(), 0);
 
-  int i1 = rand()%25;
-  int i2 = rand()%25;
+  int i1 = (int)(rand()%25);
+  int i2 = (int)(rand()%25);
   LCAImplementation::Node<int>* ancestor = binary_tree.LCA(l[i1], l[i2]);
 
   cout << "child 1 : " << i1 << "." << endl;
