@@ -1,7 +1,8 @@
 #include <iostream>
 #include <vector>
 #include <iomanip>
-#include <cstdlib>
+//#include <cstdlib>
+#include <random>
 
 using namespace std;
 
@@ -10,8 +11,9 @@ namespace LCAImplementation{
   class Node{
 
   public:
+    Node();
     Node(T);
-    ~Node();
+    //~Node();
     int compareTo(Node*);
     Node<T>* right = NULL;
     Node<T>* left = NULL;
@@ -23,9 +25,9 @@ namespace LCAImplementation{
 
   public:
     BT(vector<T>);
-    ~BT();
+    //~BT();
     Node<T>* LCA(T, T);
-    void postorder(Node<T>*, int indent);
+    void postorder(Node<T>*);
     Node<T>* getRoot();
 
   private:
@@ -33,5 +35,8 @@ namespace LCAImplementation{
     vector<Node<T>*> list;
     bool valueExists(T, Node<T>*);
     bool listFromNodeToRoot(T, Node<T>*);
+    void printRow(const Node<T>*, const int, int);
+    void getLine(const Node<T>*, int, vector<int>&);
+    unsigned getHeight(Node<T>*);
   };
 }
