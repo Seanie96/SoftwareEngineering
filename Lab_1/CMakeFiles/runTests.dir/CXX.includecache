@@ -1,0 +1,26 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/seanmcdonagh/Documents/collegeWork/SoftwareEngineering/Lab_1/LCA.hpp
+iostream
+-
+vector
+-
+iomanip
+-
+cstdlib
+-
+random
+-
+
+/home/seanmcdonagh/Documents/collegeWork/SoftwareEngineering/Lab_1/tests.cpp
+LCA.hpp
+/home/seanmcdonagh/Documents/collegeWork/SoftwareEngineering/Lab_1/LCA.hpp
+gtest/gtest.h
+-
+
