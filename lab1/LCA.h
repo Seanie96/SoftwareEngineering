@@ -27,7 +27,6 @@ namespace LCAImplementation{
     BT(vector<T>);
     //~BT();
     Node<T>* LCA(T, T);
-    void postorder(Node<T>*);
     Node<T>* getRoot();
 
   private:
@@ -35,8 +34,6 @@ namespace LCAImplementation{
     vector<Node<T>*> list;
     bool valueExists(T, Node<T>*);
     bool listFromNodeToRoot(T, Node<T>*);
-    void printRow(const Node<T>*, const int, int);
-    void getLine(const Node<T>*, int, vector<int>&);
-    unsigned getHeight(Node<T>*);
+    Node<T>* insert(Node<T>*, T);
   };
 }

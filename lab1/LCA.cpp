@@ -27,37 +27,26 @@ using namespace LCAImplementation;
 
   template<class T>
   LCAImplementation::BT<T>::BT(vector<T> vals) {
-    root = new Node<T>;
-    root->val = vals[0];
-    cout << "size : " << vals.size() << endl;
-    for(unsigned i = 1; i < vals.size(); i++) {
-      bool foundPosition = false;
-      bool right = false;
-      Node<T>* prevPointer = root;
-      Node<T>* node = root;
-      while(!foundPosition) {
-        if(node == NULL) {
-          if(right) {
-            prevPointer->right = new Node<T>();
-            prevPointer->right->val = vals[i];
-          } else  {
-            prevPointer->left = new Node<T>();
-            prevPointer->left->val = vals[i];
-          }
-          foundPosition = true;
-        } else  {
-          if(node->val < vals[i]) {
-            prevPointer = node;
-            node = node->left;
-            right = false;
-          } else {
-            prevPointer = node;
-            node = node->right;
-            right = true;
-          }
-        }
+    for(vals: val) {
+      root = insert(root, val);
+    }
+  }
+
+  template<class T>
+  LCAImplementation::BT<T>::insert(Node<T>* root, T val) {
+    if(root == NULL) {
+      root = new Node<T>;
+      root->val = val;
+    } else  {
+      if(root->val >= val) {
+        Node<T>* tmp = insert(root->left, val);
+        root->left = tmp;
+      } else  {
+        Node<T>* tmp = insert(root->right, val);
+        root->right = tmp;
       }
     }
+    return root;
   }
 
   template<class T>
@@ -117,64 +106,6 @@ using namespace LCAImplementation;
   template<class T>
   Node<T>* LCAImplementation::BT<T>::getRoot() {
     return root;
-  }
-
-  template<class T>
-  void LCAImplementation::BT<T>::postorder(Node<T>* p) {
-    int height = getHeight(p) * 2;
-    for (int i = 0 ; i < height; i ++) {
-       printRow(p, height, i);
-    }
-  }
-
-  template<class T>
-  unsigned LCAImplementation::BT<T>::getHeight() {
-
-  }
-
-  template<class T>
-  void LCAImplementation::BT<T>::printRow(const Node<T> *p, const int height, int depth) {
-    vector<int> vec;
-    int placeholder = (1<<31);
-    getLine(p, depth, vec);
-    cout << setw((height - depth)*2); // scale setw with depth
-    bool toggle = true; // start with left
-    if (vec.size() > 1) {
-      for (int v : vec) {
-        if (v != placeholder) {
-          if (toggle) {
-            cout << "/" << "   ";
-          } else {
-            cout << "\\" << "   ";
-          }
-        }
-        toggle = !toggle;
-      }
-      cout << endl;
-      cout << setw((height - depth)*2);
-    }
-    for (int v : vec) {
-      if (v != placeholder)
-        cout << v << "   ";
-    }
-    cout << endl;
-  }
-
-  template<class T>
-  void LCAImplementation::BT<T>::getLine(const Node<T> *rt, int depth, vector<int>& vals) {
-    int placeholder = (1<<31);
-    if (depth <= 0 && rt != nullptr) {
-      vals.push_back(rt->val);
-      return;
-    }
-    if (rt->left != nullptr)
-      getLine(rt->left, depth-1, vals);
-    else if (depth-1 <= 0)
-      vals.push_back(placeholder);
-    if (rt->right != nullptr)
-      getLine(rt->right, depth-1, vals);
-    else if (depth-1 <= 0)
-      vals.push_back(placeholder);
   }
 
   int main() {
