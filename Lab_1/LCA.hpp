@@ -4,9 +4,6 @@
 #include <cstdlib>
 #include <random>
 
-#define CATCH_CONFIG_MAIN  // This tells Catch to provide a main() - only do this in one cpp file
-
-
 using namespace std;
 
 namespace LCAImplementation{
@@ -28,7 +25,7 @@ namespace LCAImplementation{
   public:
     BT(vector<T>);
     //~BT() {cout << "BT Object destruction...";};
-    T* LCA(T, T);
+    T LCA(T, T);
     Node<T>* getRoot();
 
   private:
