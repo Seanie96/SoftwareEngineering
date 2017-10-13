@@ -1,4 +1,5 @@
 #include "LCA.hpp"
+
 using namespace LCAImplementation;
 
   template<class T>
@@ -47,18 +48,16 @@ using namespace LCAImplementation;
   }
 
   template<class T>
-  Node<T>* LCAImplementation::BT<T>::LCA(T val1, T val2) {
-    if(valueExists(val1, root) && valueExists(val2, root)) {
-      listFromNodeToRoot(val1, root);
-      vector<Node<T>*> list1 = list;
-      listFromNodeToRoot(val2, root);
-      vector<Node<T>*> list2 = list;
+  T* LCAImplementation::BT<T>::LCA(T val1, T val2) {
+    vector<T> list1;
+    listFromNodeToRoot(val1, root, &list1);
+    vector<T> list2;
+    listFromNodeToRoot(val2, root, &list2);
 
-      for(unsigned i = 0; i < list1.size(); i++) {
-        for(unsigned j = 0; j < list2.size(); j++) {
-          if(list1[i]->val == list2[j]->val) {
-            return  list[i];
-          }
+    for(unsigned i = list1.size(); i-- > 0; ) {
+      for(unsigned j = list2.size(); j-- > 0 ; ) {
+        if(list1[i] == list2[j]) {
+          return  &list2[j];
         }
       }
     }
@@ -66,41 +65,18 @@ using namespace LCAImplementation;
   }
 
   template<class T>
-  bool LCAImplementation::BT<T>::valueExists(T val, Node<T>* node) {
-    if(node != NULL) {
-      if(val == node->val) {
-        return true;
-      } else  {
-        bool found = false;
-        if(node->val > val) {
-          found = valueExists(val, node->left);
-        } else  {
-          found = valueExists(val, node->right);
-        }
-        return found;
-      }
+  void LCAImplementation::BT<T>::listFromNodeToRoot(T val, Node<T>* node, vector<T>* list) {
+    if(val == node->val) {
+      list->push_back(node->val);
+      return;
+    } else if(val < node->val) {
+      list->push_back(node->val);
+      LCAImplementation::BT<T>::listFromNodeToRoot(val, node->left, list);
     } else  {
-      return false;
+      list->push_back(node->val);
+      LCAImplementation::BT<T>::listFromNodeToRoot(val, node->right, list);
     }
   }
-
-  template<class T>
-    bool LCAImplementation::BT<T>::listFromNodeToRoot(T val, Node<T>* node) {
-      if(val == node->val) {
-        list = vector<Node<T>*>();
-        list.push_back(node);
-        return true;
-      } else {
-        bool func1 = listFromNodeToRoot(val, node->left);
-        bool func2 = listFromNodeToRoot(val, node->right);
-        if(func1 || func2) {
-          list.push_back(node);
-          return true;
-        } else  {
-          return false;
-        }
-      }
-    }
 
   template<class T>
   Node<T>* LCAImplementation::BT<T>::getRoot() {

@@ -1,0 +1,9 @@
+"LCA.exe":
+	debugger: "dbg-gdb"
+	path: "LCA.exe"
+	cwd: "C:\\Users\\SEMCDONA\\Documents\\collegeWork\\SoftwareEngineering\\lab1"
+
+"LCA.cpp":
+	debugger: "dbg-gdb"
+	path: "LCA.cpp"
+	cwd: "C:\\Users\\SEMCDONA\\Documents\\collegeWork\\SoftwareEngineering\\lab1"

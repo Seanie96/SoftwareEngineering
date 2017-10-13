@@ -1,3 +1,0 @@
-/home/seanmcdonagh/Documents/collegeWork/SoftwareEngineering/Lab_1/CMakeFiles/edit_cache.dir
-/home/seanmcdonagh/Documents/collegeWork/SoftwareEngineering/Lab_1/CMakeFiles/rebuild_cache.dir
-/home/seanmcdonagh/Documents/collegeWork/SoftwareEngineering/Lab_1/CMakeFiles/runTests.dir

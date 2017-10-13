@@ -4,6 +4,9 @@
 #include <cstdlib>
 #include <random>
 
+#define CATCH_CONFIG_MAIN  // This tells Catch to provide a main() - only do this in one cpp file
+
+
 using namespace std;
 
 namespace LCAImplementation{
@@ -12,7 +15,7 @@ namespace LCAImplementation{
 
   public:
     Node(T);
-    ~Node() {cout << "Node Object destruction...";};
+    //~Node() {cout << "Node Object destruction...";};
     int compareTo(Node*);
     Node<T>* right = NULL;
     Node<T>* left = NULL;
@@ -24,15 +27,13 @@ namespace LCAImplementation{
 
   public:
     BT(vector<T>);
-    ~BT() {cout << "BT Object destruction...";};
-    Node<T>* LCA(T, T);
+    //~BT() {cout << "BT Object destruction...";};
+    T* LCA(T, T);
     Node<T>* getRoot();
 
   private:
     Node<T>* root = NULL;
-    vector<Node<T>*> list;
-    bool valueExists(T, Node<T>*);
-    bool listFromNodeToRoot(T, Node<T>*);
+    void listFromNodeToRoot(T, Node<T>*, vector<T>*);
     Node<T>* insert(Node<T>*, T);
   };
 }
