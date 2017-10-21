@@ -1,0 +1,22 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	0	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+LCAImplementation	/home/seanmcdonagh/Documents/collegeWork/SoftwareEngineering/Lab1/LCA.hpp	/^namespace LCAImplementation{$/;"	namespace	line:9
+Node	/home/seanmcdonagh/Documents/collegeWork/SoftwareEngineering/Lab1/LCA.hpp	/^  class Node{$/;"	class	line:11	namespace:LCAImplementation
+right	/home/seanmcdonagh/Documents/collegeWork/SoftwareEngineering/Lab1/LCA.hpp	/^    Node<T>* right = NULL;$/;"	member	line:17	class:LCAImplementation::Node
+left	/home/seanmcdonagh/Documents/collegeWork/SoftwareEngineering/Lab1/LCA.hpp	/^    Node<T>* left = NULL;$/;"	member	line:18	class:LCAImplementation::Node
+val	/home/seanmcdonagh/Documents/collegeWork/SoftwareEngineering/Lab1/LCA.hpp	/^    T val;$/;"	member	line:19	class:LCAImplementation::Node
+BT	/home/seanmcdonagh/Documents/collegeWork/SoftwareEngineering/Lab1/LCA.hpp	/^  class BT{$/;"	class	line:23	namespace:LCAImplementation
+root	/home/seanmcdonagh/Documents/collegeWork/SoftwareEngineering/Lab1/LCA.hpp	/^    Node<T>* root = NULL;$/;"	member	line:32	class:LCAImplementation::BT
+CATCH_CONFIG_MAIN	/home/seanmcdonagh/Documents/collegeWork/SoftwareEngineering/Lab1/LCA.cpp	/^#define CATCH_CONFIG_MAIN /;"	macro	line:1	file:
+Node	/home/seanmcdonagh/Documents/collegeWork/SoftwareEngineering/Lab1/LCA.cpp	/^  LCAImplementation::Node<T>::Node(T value) {$/;"	function	line:8	class:LCAImplementation::Node	signature:(T value)
+compareTo	/home/seanmcdonagh/Documents/collegeWork/SoftwareEngineering/Lab1/LCA.cpp	/^  int LCAImplementation::Node<T>::compareTo(Node<T> *node) {$/;"	function	line:15	class:LCAImplementation::Node	signature:(Node<T> *node)
+BT	/home/seanmcdonagh/Documents/collegeWork/SoftwareEngineering/Lab1/LCA.cpp	/^  LCAImplementation::BT<T>::BT(vector<T> vals) {$/;"	function	line:26	class:LCAImplementation::BT	signature:(vector<T> vals)
+insert	/home/seanmcdonagh/Documents/collegeWork/SoftwareEngineering/Lab1/LCA.cpp	/^  Node<T>* LCAImplementation::BT<T>::insert(Node<T>* root, T val) {$/;"	function	line:33	class:LCAImplementation::BT	signature:(Node<T>* root, T val)
+LCA	/home/seanmcdonagh/Documents/collegeWork/SoftwareEngineering/Lab1/LCA.cpp	/^  void LCAImplementation::BT<T>::LCA(T val1, T val2, T* res) {$/;"	function	line:49	class:LCAImplementation::BT	signature:(T val1, T val2, T* res)
+nodeExists	/home/seanmcdonagh/Documents/collegeWork/SoftwareEngineering/Lab1/LCA.cpp	/^  bool LCAImplementation::BT<T>::nodeExists(T val, Node<T>* node) {$/;"	function	line:71	class:LCAImplementation::BT	signature:(T val, Node<T>* node)
+listFromNodeToRoot	/home/seanmcdonagh/Documents/collegeWork/SoftwareEngineering/Lab1/LCA.cpp	/^  void LCAImplementation::BT<T>::listFromNodeToRoot(T val, Node<T>* node, vector<T>* list) {$/;"	function	line:87	class:LCAImplementation::BT	signature:(T val, Node<T>* node, vector<T>* list)
+getRoot	/home/seanmcdonagh/Documents/collegeWork/SoftwareEngineering/Lab1/LCA.cpp	/^  Node<T>* LCAImplementation::BT<T>::getRoot() {$/;"	function	line:101	class:LCAImplementation::BT	signature:()
