@@ -12,8 +12,7 @@ namespace LCAImplementation{
 
   public:
     Node(T);
-    Node<T>* right = NULL;
-    Node<T>* left = NULL;
+    Node<T>*[] nextNodes = NULL;
     T val;
   };
 
@@ -21,14 +20,15 @@ namespace LCAImplementation{
   class BT{
 
   public:
-    BT(vector<T>);
+    BT();
     void LCA(T, T, T*);
     Node<T>* getRoot();
+    Node<T>* insert(Node<T>*, Node<T>*, T);
+    bool cycleExist(Node<T>*);
 
   private:
     Node<T>* root = NULL;
     void listFromNodeToRoot(T, Node<T>*, vector<T>*);
     bool nodeExists(T, Node<T>*);
-    Node<T>* insert(Node<T>*, T);
   };
 }

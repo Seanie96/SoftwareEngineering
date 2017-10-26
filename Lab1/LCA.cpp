@@ -117,7 +117,18 @@ using namespace LCAImplementation;
   TEST_CASE( "LCA tests being ran on full tree...........", "[LCA]" ) {
     vector<int> list = vector<int>();
 
-    list.push_back(6);                      //                          6
+    /*
+
+      Check for Cycles...
+      Therefore build a graph that has one.
+    */
+
+    list.push_back(6);                      /*                          6  <----
+                                                                      /   \     \
+                                                                     4 --> 5 --> 17
+                                                                    /
+                                                                   15  
+                                            */
 
     LCAImplementation::BT<int> binary_tree (list);
 
@@ -141,16 +152,16 @@ using namespace LCAImplementation;
     list.clear();
     list = vector<int>();
 
-    list.push_back(6);                      //                          6
+    list.push_back(6);                      //                          6 - root
     list.push_back(8);                      /*                        /   \                           */
     list.push_back(4);                      /*                      4       8                         */
     list.push_back(3);                      /*                    /   \   /   \                       */
     list.push_back(5);                      /*                   3     5 7     10                     */
-    list.push_back(7);                      /*                                /                       */
-    list.push_back(10);                     /*                               9                        */
-    list.push_back(9);
-
-    LCAImplementation::BT<int> binary_tree_2 (list);
+    list.push_back(7);                      /*                    \   /   \     \                     */
+    list.push_back(10);                     /*                     17       9 - 15                    */
+    list.push_back(9);                      /*                       \___    ___/                     */
+                                            /*                           \  /                         */
+    LCAImplementation::BT<int> binary_tree_2 (list);      /*              27                          */
 
     SECTION( "Checking the LCA of nodes within the BST" ) {
       binary_tree_2.LCA(7, 10, num);
@@ -188,6 +199,10 @@ using namespace LCAImplementation;
       REQUIRE(num[0] == 6);
       binary_tree_2.LCA(5, 6, num);
       REQUIRE(num[0] == 6);
+    }
+
+    SECTION( "Checking for Cycle in graph" ) {
+
     }
 
  }
