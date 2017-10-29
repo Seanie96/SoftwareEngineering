@@ -138,7 +138,7 @@ using namespace LCAImplementation;
     */
 
     LCAImplementation::BT<int> binary_tree = LCAImplementation::BT<int>::BT();
-    LCAImplementation::Node<int> root = LCAImplementation::Node<int>::Node<int>(6); 
+    LCAImplementation::Node<int>* root = LCAImplementation::Node<int>::Node<int>(6); 
     binary_tree.setRoot(root);
     LCAImplementation::Node<int> node = LCAImplementation::Node<int>::Node<int>(4);     
     binary_tree.insert(root, node, 6);
@@ -164,65 +164,97 @@ using namespace LCAImplementation;
     binary_tree.insert(root, node, 17);
     binary_tree.insert(root, node, 15);
 
+    /*
+      Testing the nodeExists method...
+    */
+
     SECTION( "Checking nodeExists method" ) {
-        bool res = binary_tree.nodeExists(6, root);
-        REQUIRE(res == true);
-        res = binary_tree.nodeExists(4, root);
-        REQUIRE(res == true);
-        res = binary_tree.nodeExists(8, root);
-        REQUIRE(res == true);
-        res = binary_tree.nodeExists(10, root);
-        REQUIRE(res == true);
-        res = binary_tree.nodeExists(7, root);
-        REQUIRE(res == true);
-        res = binary_tree.nodeExists(3, root);
-        REQUIRE(res == true);
-        res = binary_tree.nodeExists(5, root);
-        REQUIRE(res == true);
-        res = binary_tree.nodeExists(17, root);
-        REQUIRE(res == true);
-        res = binary_tree.nodeExists(9, root);
-        REQUIRE(res == true);
-        res = binary_tree.nodeExists(15, root);        
-
+      bool res = binary_tree.nodeExists(6, root);
+      REQUIRE(res == true);
+      res = binary_tree.nodeExists(4, root);
+      REQUIRE(res == true);
+      res = binary_tree.nodeExists(8, root);
+      REQUIRE(res == true);
+      res = binary_tree.nodeExists(10, root);
+      REQUIRE(res == true);
+      res = binary_tree.nodeExists(7, root);
+      REQUIRE(res == true);
+      res = binary_tree.nodeExists(3, root);
+      REQUIRE(res == true);
+      res = binary_tree.nodeExists(5, root);
+      REQUIRE(res == true);
+      res = binary_tree.nodeExists(17, root);
+      REQUIRE(res == true);
+      res = binary_tree.nodeExists(9, root);
+      REQUIRE(res == true);
+      res = binary_tree.nodeExists(15, root);        
     }
 
-    SECTION( "Checking the LCA of nodes within the BST and hence whether insert method worked" ) {
-      binary_tree_2.LCA(7, 10, num);
+    /*
+      Testing the listFromNodeToRoot method...
+    */
+
+    SECTION( "Checking the listFromNodeToRoot method" ) {
+      std::vector<int>* list = new std::vector<int>();
+      binary_tree.listFromNodeToRoot(5, root, list);
+      std::vector<int>* compList = new std::vector<int>();
+      compList.push_back(5);
+      compList.push_back(4);
+      compList.push_back(6);
+      REQUIRE(!(list != compList));
+      list.clear();
+      binary_tree.listFromNodeToRoot(15, root, list);
+      compList.clear();
+      compList.push_back(15);
+      compList.push_back(10);
+      compList.push_back(8);
+      compList.push_back(6);
+      REQUIRE(!(list != compList));
+    }
+
+    /*
+      Testing the LCA method...
+    */
+    int* num = new int [1];
+
+    SECTION( "Checking the LCA of nodes within the DGA and hence whether insert method worked" ) {
+      binary_tree.LCA(7, 10, num);
       REQUIRE(num[0] == 8);
-      binary_tree_2.LCA(7, 9, num);
+      binary_tree.LCA(10, 9, num);
       REQUIRE(num[0] == 8);
-      binary_tree_2.LCA(3, 5, num);
-      REQUIRE(num[0] == 4);
-      binary_tree_2.LCA(3, 9, num);
+      binary_tree.LCA(17, 15, num);
       REQUIRE(num[0] == 6);
+      binary_tree.LCA(3, 9, num);
+      REQUIRE(num[0] == 6);
+      binary_tree.LCA(3, 5, num);
+      REQUIRE(num[0] == 4);
     }
 
-    SECTION( "Checking the LCA of a node/s that is/are not in the BST" ) {
-      binary_tree_2.LCA(12, 10, num);
+    SECTION( "Checking the LCA of a node/s that is/are not in the DGA" ) {
+      binary_tree.LCA(12, 10, num);
       int n = (int)num[0];
       REQUIRE(n == INT_MIN);
-      binary_tree_2.LCA(50, 80, num);
+      binary_tree.LCA(50, 80, num);
       n = (int)num[0];
       REQUIRE(n == INT_MIN);
     }
 
     SECTION( "Checking if the ancestor of two nodes which are the same, is the node itself" ) {
-      binary_tree_2.LCA(8, 8, num);
+      binary_tree.LCA(8, 8, num);
       REQUIRE(num[0] == 8);
-      binary_tree_2.LCA(9, 9, num);
+      binary_tree.LCA(9, 9, num);
       REQUIRE(num[0] == 9);
-      binary_tree_2.LCA(6, 6, num);
+      binary_tree.LCA(6, 6, num);
       REQUIRE(num[0] == 6);
     }
 
     SECTION( "Checking if the ancestor of two nodes, where one node is the ancestor of the other, is the ancestoral node of the two" ) {
-      binary_tree_2.LCA(8, 10, num);
+      binary_tree.LCA(8, 10, num);
       REQUIRE(num[0] == 8);
-      binary_tree_2.LCA(9, 6, num);
-      REQUIRE(num[0] == 6);
-      binary_tree_2.LCA(5, 6, num);
-      REQUIRE(num[0] == 6);
+      binary_tree.LCA(27, 10, num);
+      REQUIRE(num[0] == 10);
+      binary_tree.LCA(15, 8, num);
+      REQUIRE(num[0] == 8);
     }
 
  }
