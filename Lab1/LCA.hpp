@@ -7,12 +7,15 @@
 using namespace std;
 
 namespace LCAImplementation{
+  const int MAX_NODES = 10;
+
   template <class T>
   class Node{
 
   public:
     Node(T);
-    Node<T>*[] nextNodes = NULL;
+    Node<T>** nextNodes;
+    int size = 0;
     T val;
   };
 
@@ -23,7 +26,8 @@ namespace LCAImplementation{
     BT();
     void LCA(T, T, T*);
     Node<T>* getRoot();
-    Node<T>* insert(Node<T>*, Node<T>*, T);
+    void setRoot(Node<T>*);
+    bool insert(Node<T>*, Node<T>*, T);
     bool cycleExist(Node<T>*);
 
   private:

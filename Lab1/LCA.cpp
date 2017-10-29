@@ -1,5 +1,5 @@
 #define CATCH_CONFIG_MAIN  // This tells Catch to provide a main() - only do this in one cpp file
-#include "../../../../catch.hpp"
+#include "catch.hpp"
 #include "LCA.hpp"
 #include <climits>
 
@@ -11,37 +11,35 @@ using namespace LCAImplementation;
   template<class T>
   LCAImplementation::Node<T>::Node(T value) {
     val = value;
-    right = NULL;
-    left = NULL;
+    for(int i = 0; i < 10; i++) {
+      nextNodes[i] = NULL;
+    }
   }
 
   /*
    *  Constructor for a Binary Tree
    */
   template<class T>
-  LCAImplementation::BT<T>::BT(vector<T> vals) {
-    for(unsigned i = 0; i < vals.size(); i++) {
-      root = insert(root, vals[i]);
-    }
+  LCAImplementation::BT<T>::BT() {
+    // Do Nothing!
   }
 
   /*
    *  Returns the new root node, when a given node is placed in the BST.
    */
   template<class T>
-  Node<T>* LCAImplementation::BT<T>::insert(Node<T>* root, T val) {
-    if(root == NULL) {
-      root = new Node<T>(val);
+  bool LCAImplementation::BT<T>::insert(Node<T>* root, Node<T>* newNode, T valBefore) {
+    if(root->val == valBefore) {
+       root->nextNodes[root->size] = newNode;
+       root->size = root->size + 1;
+       return true;
     } else  {
-      if(root->val >= val) {
-        Node<T>* tmp = insert(root->left, val);
-        root->left = tmp;
-      } else  {
-        Node<T>* tmp = insert(root->right, val);
-        root->right = tmp;
+      for(int i = 0; i < root->size; i++) {
+        if(insert(root->nextNodes[i])) {
+          return true;
+        }
       }
     }
-    return root;
   }
 
   /*
@@ -113,57 +111,83 @@ using namespace LCAImplementation;
     return root;
   }
 
+/*
+   *  Returns a pointer to the root node of a BST.
+   */
+  template<class T>
+  void LCAImplementation::BT<T>::setRoot(Node<T>* node) {
+    root = node;
+  }
+
+
 
   TEST_CASE( "LCA tests being ran on full tree...........", "[LCA]" ) {
-    vector<int> list = vector<int>();
+    //                          6(root)
+    /*                        /   \                           */
+    /*                      4       8                         */
+    /*                    /   \   /   \                       */
+    /*                   3     5 7     10                     */
+    /*                    \   /   \     \                     */
+    /*                     17      9 -> 15                    */
+    /*                       \___    ___/                     */
+    /*                           \  /                         */
+    /*                            27                          */
 
     /*
-
-      Check for Cycles...
-      Therefore build a graph that has one.
+      Insert Nodes
     */
 
-    list.push_back(6);                      /*                          6  <----
-                                                                      /   \     \
-                                                                     4 --> 5 --> 17
-                                                                    /
-                                                                   15  
-                                            */
+    LCAImplementation::BT<int> binary_tree = LCAImplementation::BT<int>::BT();
+    LCAImplementation::Node<int> root = LCAImplementation::Node<int>::Node<int>(6); 
+    binary_tree.setRoot(root);
+    LCAImplementation::Node<int> node = LCAImplementation::Node<int>::Node<int>(4);     
+    binary_tree.insert(root, node, 6);
+    node = LCAImplementation::Node<int>::Node<int>(8); 
+    binary_tree.insert(root, node, 6);
+    node = LCAImplementation::Node<int>::Node<int>(10); 
+    binary_tree.insert(root, node, 8);
+    node = LCAImplementation::Node<int>::Node<int>(7); 
+    binary_tree.insert(root, node, 8);
+    node = LCAImplementation::Node<int>::Node<int>(3); 
+    binary_tree.insert(root, node, 4);
+    node = LCAImplementation::Node<int>::Node<int>(5); 
+    binary_tree.insert(root, node, 4);
+    node = LCAImplementation::Node<int>::Node<int>(17); 
+    binary_tree.insert(root, node, 3);
+    binary_tree.insert(root, node, 5);
+    node = LCAImplementation::Node<int>::Node<int>(9); 
+    binary_tree.insert(root, node, 7);
+    node = LCAImplementation::Node<int>::Node<int>(15); 
+    binary_tree.insert(root, node, 9);
+    binary_tree.insert(root, node, 10);
+    node = LCAImplementation::Node<int>::Node<int>(27); 
+    binary_tree.insert(root, node, 17);
+    binary_tree.insert(root, node, 15);
 
-    LCAImplementation::BT<int> binary_tree (list);
+    SECTION( "Checking nodeExists method" ) {
+        bool res = binary_tree.nodeExists(6, root);
+        REQUIRE(res == true);
+        res = binary_tree.nodeExists(4, root);
+        REQUIRE(res == true);
+        res = binary_tree.nodeExists(8, root);
+        REQUIRE(res == true);
+        res = binary_tree.nodeExists(10, root);
+        REQUIRE(res == true);
+        res = binary_tree.nodeExists(7, root);
+        REQUIRE(res == true);
+        res = binary_tree.nodeExists(3, root);
+        REQUIRE(res == true);
+        res = binary_tree.nodeExists(5, root);
+        REQUIRE(res == true);
+        res = binary_tree.nodeExists(17, root);
+        REQUIRE(res == true);
+        res = binary_tree.nodeExists(9, root);
+        REQUIRE(res == true);
+        res = binary_tree.nodeExists(15, root);        
 
-    int* num = new int [1];
-
-    SECTION( "Checking the LCA of nodes within the BST, which contains one node" ) {
-      binary_tree.LCA(6, 6, num);
-      REQUIRE(num[0] == 6);
     }
 
-    SECTION( "hecking the LCA of a node/s that is/are not in the BST, which contains one node" ) {
-      binary_tree.LCA(7, 6, num);
-      int n = (int)num[0];
-      REQUIRE(n == INT_MIN);
-      binary_tree.LCA(8, 7, num);
-      n = (int)num[0];
-      REQUIRE(n == INT_MIN);
-    }
-
-
-    list.clear();
-    list = vector<int>();
-
-    list.push_back(6);                      //                          6 - root
-    list.push_back(8);                      /*                        /   \                           */
-    list.push_back(4);                      /*                      4       8                         */
-    list.push_back(3);                      /*                    /   \   /   \                       */
-    list.push_back(5);                      /*                   3     5 7     10                     */
-    list.push_back(7);                      /*                    \   /   \     \                     */
-    list.push_back(10);                     /*                     17       9 - 15                    */
-    list.push_back(9);                      /*                       \___    ___/                     */
-                                            /*                           \  /                         */
-    LCAImplementation::BT<int> binary_tree_2 (list);      /*              27                          */
-
-    SECTION( "Checking the LCA of nodes within the BST" ) {
+    SECTION( "Checking the LCA of nodes within the BST and hence whether insert method worked" ) {
       binary_tree_2.LCA(7, 10, num);
       REQUIRE(num[0] == 8);
       binary_tree_2.LCA(7, 9, num);
@@ -199,10 +223,6 @@ using namespace LCAImplementation;
       REQUIRE(num[0] == 6);
       binary_tree_2.LCA(5, 6, num);
       REQUIRE(num[0] == 6);
-    }
-
-    SECTION( "Checking for Cycle in graph" ) {
-
     }
 
  }
