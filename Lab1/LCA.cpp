@@ -92,11 +92,14 @@ using namespace LCAImplementation;
 
   /*
    *  Returns all of the common ancestors of these two nodes, in listOfCommonNodes...
+   *  0 is returned if val1 is found in branch
+   *  1 is returned if val2 is found in branch
+   *  2 is returned if both val1 and val2 is in branch, the depth and value of the node is added to lists (listOfVals, listOfDepths)
+   *  3 is returned if val1 or val2 is not to be in the branch
    */
   template<class T>
   int LCAImplementation::BT<T>::getCommonAncestors(vector<T>* listOfVals, vector<int>* listOfDepths, int depth, T val1, T val2, Node<T>* root) {
     bool isAncestor1 = false, isAncestor2 = false, isCommonAncestor = false;
-
 
     if(root->val == val1 && val1 == val2) {
       isCommonAncestor = true;
@@ -151,14 +154,14 @@ using namespace LCAImplementation;
     root = node;
   }
 
-/*
-    NOTE!!!!!!!!!
-    Did not test for cycles in DAG..
-    I assumed that there would be no cycles in the graph given, since it is an Asyclic graph given to test the LCA on.
- */
+
 
   TEST_CASE( "LCA tests being ran on full tree...........", "[LCA]" ) {
     /*    !!!!Testing DGA given on Assignment description!!!!   */
+
+    /*
+        All the lines ('\', '/'), are meant to be point down s.t the node at the top is the parent of the child node at the bottom..
+     */
 
     //                          6(root)
     /*                        /   \                     */
@@ -170,10 +173,18 @@ using namespace LCAImplementation;
     /*                             |                    */
     /*                             27                   */
 
-    /*
-      Insert Nodes
-    */
 
+
+
+    /*
+        NOTE!!!!!!!!!
+        Did not test for cycles in DAG..
+        I assumed that there would be no cycles in the graph given, since it is an Asyclic graph given to test the LCA on.
+     */
+
+    /*
+        Insert Nodes
+     */
 
     LCAImplementation::BT<int>* binary_tree1 = new LCAImplementation::BT<int>();
     LCAImplementation::Node<int>* root1 = new LCAImplementation::Node<int>(6); 
@@ -259,6 +270,10 @@ using namespace LCAImplementation;
       REQUIRE(num1[0] == 5);
     }
 
+
+    /*
+      New random DGA....
+     */
 
 
     //                          6(root)
