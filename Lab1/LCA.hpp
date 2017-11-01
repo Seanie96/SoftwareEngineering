@@ -29,9 +29,9 @@ namespace LCAImplementation{
     Node<T>* getRoot();
     void setRoot(Node<T>*);
     bool insert(Node<T>*, Node<T>*, T);
-    bool listFromNodeToRoot(T, Node<T>*, vector<T>*);
+    //bool listFromNodeToRoot(T, Node<T>*, vector<T>*);
     bool nodeExists(T, Node<T>*);
-    //bool getAncestors(vector<tuple<T, int>>*, int, T, T, Node<T>*); 
+    int getCommonAncestors(vector<T>*, vector<int>*, int, T, T, Node<T>*); 
 
   private:
     Node<T>* root = NULL;

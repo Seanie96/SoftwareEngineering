@@ -48,22 +48,22 @@ using namespace LCAImplementation;
   template<class T>
   void LCAImplementation::BT<T>::LCA(T val1, T val2, T* res) {
     if(nodeExists(val1, root) && nodeExists(val2, root)) {
-      vector<T> list1;
-      listFromNodeToRoot(val1, root, &list1);
-      vector<T> list2;
-      listFromNodeToRoot(val2, root, &list2);
+      vector<T>* list1 = new vector<T>();
+      vector<int>* list2 = new vector<int>();
 
-      int size1 = list1.size();
-      int size2 = list2.size();
+      getCommonAncestors(list1, list2, 0, val1, val2, getRoot());
 
-      for(int i = 0; i < size1; i++) {
-        for(int j = 0; j < size2; j++) {
-          if(list1[i] == list2[j]) {
-            res[0] = list2[j];
-            return;
-          }
+      int maxDepth = -1;
+      T LCA = (T)INT_MIN;
+      for(int i = 0; i < list1->size(); i++) {
+        int num = (int)list2[0][i];
+        T val = (T)list1[0][i];
+        if(num > maxDepth) {
+          maxDepth = num;
+          LCA = val;
         }
       }
+      res[0] = LCA;
     } else  {
       res[0] = (T)INT_MIN;
     }
@@ -91,26 +91,48 @@ using namespace LCAImplementation;
   }
 
   /*
-   *  Returns a list of nodes from the node that contains val, back up to the root node.
+   *  Returns all of the common ancestors of these two nodes, in listOfCommonNodes...
    */
   template<class T>
-  bool LCAImplementation::BT<T>::listFromNodeToRoot(T val, Node<T>* node, vector<T>* list) {
-    if(val == node->val) {
-      list->push_back(node->val);
-      cout << "AT.......pushing: " << node->val << endl;
-      return true;
-    } else  {
-      int size = node->size;
-      for(int i = 0; i < size; i++) {
-        if(listFromNodeToRoot(val, node->nextNodes[i], list)) {
-          list->push_back(node->val);
-          cout << "pushing: " << node->val << endl;
-          return true;
-        }
-      }
-      return false;
+  int LCAImplementation::BT<T>::getCommonAncestors(vector<T>* listOfVals, vector<int>* listOfDepths, int depth, T val1, T val2, Node<T>* root) {
+    bool isAncestor1 = false, isAncestor2 = false, isCommonAncestor = false;
+
+
+    if(root->val == val1 && val1 == val2) {
+      isCommonAncestor = true;
+    } else if(root->val == val1) {
+      isAncestor1 = true;
+    }  else if(root->val == val2) {
+      isAncestor2 = true;
     }
-    return false;
+
+    int size = root->size;
+    for(int i = 0; i < size; i++) {
+      int ret = getCommonAncestors(listOfVals, listOfDepths, depth + 1, val1, val2, root->nextNodes[i]);
+      if(ret == 0) {
+        isAncestor1 = true;
+      } else if(ret == 1) {
+        isAncestor2 = true;
+      } else if(ret == 2) {
+        isCommonAncestor = true;
+      }
+    }
+
+    if(isCommonAncestor) {
+      listOfVals->push_back(root->val);
+      listOfDepths->push_back(depth);
+      return 2;
+    } else if(isAncestor1 && isAncestor2) {
+      listOfVals->push_back(root->val);
+      listOfDepths->push_back(depth);
+      return 2;
+    } else if(isAncestor1) {
+      return 0;
+    } else if(isAncestor2) {
+      return 1;
+    } else  {
+      return 3;
+    }
   }
 
   /*
@@ -121,7 +143,7 @@ using namespace LCAImplementation;
     return root;
   }
 
-/*
+  /*
    *  Returns a pointer to the root node of a BST.
    */
   template<class T>
@@ -132,8 +154,6 @@ using namespace LCAImplementation;
 
 
   TEST_CASE( "LCA tests being ran on full tree...........", "[LCA]" ) {
-
-
 
     //                          6(root)
     /*                        /   \                           */
@@ -204,52 +224,6 @@ using namespace LCAImplementation;
       REQUIRE(res == true);
       res = binary_tree->nodeExists(15, root);        
     }
-
-
-    /*
-      Testing the listFromNodeToRoot method...
-    */
-
-    SECTION( "Checking the listFromNodeToRoot method" ) {
-      std::vector<int>* list = new std::vector<int>();
-      binary_tree->listFromNodeToRoot(5, root, list);
-      std::vector<int>* compList = new std::vector<int>();
-      
-      compList->push_back(5);
-      compList->push_back(4);
-      compList->push_back(6);
-      bool same = true;
-      for(int i = 0; i < compList->size(); i++) {
-        int val1 = compList[0][i];
-        int val2 = list[0][i];
-        if(val1 != val2) {
-          same = false;
-          break;
-        }
-      }
-      REQUIRE(same);
-
-      
-
-      list->clear();
-      binary_tree->listFromNodeToRoot(15, root, list);
-      compList->clear();
-      compList->push_back(15);
-      compList->push_back(10);
-      compList->push_back(8);
-      compList->push_back(6);
-      same = true;
-      for(int i = 0; i < compList->size(); i++) {
-        int val1 = compList[0][i];
-        int val2 = list[0][i];
-        if(val1 != val2) {
-          same = false;
-          break;
-        }
-      }
-      REQUIRE(same);
-    }
-
 
     /*
       Testing the LCA method...
