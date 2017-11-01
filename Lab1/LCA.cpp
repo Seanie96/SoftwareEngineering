@@ -151,9 +151,115 @@ using namespace LCAImplementation;
     root = node;
   }
 
-
+/*
+    NOTE!!!!!!!!!
+    Did not test for cycles in DAG..
+    I assumed that there would be no cycles in the graph given, since it is an Asyclic graph given to test the LCA on.
+ */
 
   TEST_CASE( "LCA tests being ran on full tree...........", "[LCA]" ) {
+    /*    !!!!Testing DGA given on Assignment description!!!!   */
+
+    //                          6(root)
+    /*                        /   \                     */
+    /*                       4     8                    */
+    /*                       |     |                    */
+    /*                       5     10                   */
+    /*                        \    |                    */
+    /*                         --->9                    */
+    /*                             |                    */
+    /*                             27                   */
+
+    /*
+      Insert Nodes
+    */
+
+
+    LCAImplementation::BT<int>* binary_tree1 = new LCAImplementation::BT<int>();
+    LCAImplementation::Node<int>* root1 = new LCAImplementation::Node<int>(6); 
+    binary_tree1->setRoot(root1);
+    LCAImplementation::Node<int>* node1 = new LCAImplementation::Node<int>(4);
+    binary_tree1->insert(root1, node1, 6);
+    node1 = new LCAImplementation::Node<int>(8); 
+    binary_tree1->insert(root1, node1, 6);
+    node1 = new LCAImplementation::Node<int>(10); 
+    binary_tree1->insert(root1, node1, 8);
+    node1 = new LCAImplementation::Node<int>(5); 
+    binary_tree1->insert(root1, node1, 4);
+    node1 = new LCAImplementation::Node<int>(9); 
+    binary_tree1->insert(root1, node1, 10);
+    binary_tree1->insert(root1, node1, 5);
+    node1 = new LCAImplementation::Node<int>(27);
+    binary_tree1->insert(root1, node1, 9);
+
+    /*
+      Testing the nodeExists method...
+    */
+
+    SECTION( "Checking nodeExists method" ) {
+      bool res = binary_tree1->nodeExists(6, root1);
+      REQUIRE(res == true);
+      res = binary_tree1->nodeExists(4, root1);
+      REQUIRE(res == true);
+      res = binary_tree1->nodeExists(8, root1);
+      REQUIRE(res == true);
+      res = binary_tree1->nodeExists(10, root1);
+      REQUIRE(res == true);
+      res = binary_tree1->nodeExists(5, root1);
+      REQUIRE(res == true);
+      res = binary_tree1->nodeExists(9, root1);
+      REQUIRE(res == true);
+      res = binary_tree1->nodeExists(27, root1);        
+    }
+
+    /*
+      Testing the LCA method...
+    */
+    int* num1 = new int [1];
+
+    SECTION( "Checking the LCA of nodes within the DGA and hence whether insert method worked" ) {
+      binary_tree1->LCA(5, 10, num1);
+      REQUIRE(num1[0] == 6);
+      binary_tree1->LCA(10, 4, num1);
+      REQUIRE(num1[0] == 6);
+      binary_tree1->LCA(5, 8, num1);
+      REQUIRE(num1[0] == 6);
+      binary_tree1->LCA(4, 8, num1);
+      REQUIRE(num1[0] == 6);
+      binary_tree1->LCA(6, 27, num1);
+      REQUIRE(num1[0] == 6);
+    }
+
+
+    SECTION( "Checking the LCA of a node/s that is/are not in the DGA" ) {
+      binary_tree1->LCA(12, 10, num1);
+      int n = (int)num1[0];
+      REQUIRE(n == INT_MIN);
+      binary_tree1->LCA(50, 80, num1);
+      n = (int)num1[0];
+      REQUIRE(n == INT_MIN);
+    }
+
+
+    SECTION( "Checking if the ancestor of two nodes which are the same, is the node itself" ) {
+      binary_tree1->LCA(8, 8, num1);
+      REQUIRE(num1[0] == 8);
+      binary_tree1->LCA(27, 27, num1);
+      REQUIRE(num1[0] == 27);
+      binary_tree1->LCA(6, 6, num1);
+      REQUIRE(num1[0] == 6);
+    }
+
+    SECTION( "Checking if the ancestor of two nodes, where one node is the ancestor of the other, is the ancestoral node of the two" ) {
+      binary_tree1->LCA(8, 10, num1);
+      REQUIRE(num1[0] == 8);
+      binary_tree1->LCA(10, 27, num1);
+      REQUIRE(num1[0] == 10);
+      binary_tree1->LCA(9, 5, num1);
+      REQUIRE(num1[0] == 5);
+    }
+
+
 
     //                          6(root)
     /*                        /   \                           */
