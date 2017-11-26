@@ -1,0 +1,10 @@
+extends layout
+ 
+block content
+    p Enter a github username to see some basic data about that user
+    form(action="/GIT_USER_DATA_DISPLAY" method="POST")
+        input(name="GITUSER_NAME" id="GITUSER_NAME" type="text")
+        input(type="submit")
+
+    br
+    a(href="/") Click here to return to home page....

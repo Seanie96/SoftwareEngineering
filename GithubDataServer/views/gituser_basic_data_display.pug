@@ -1,0 +1,48 @@
+extends layout
+ 
+block content
+    html
+        head
+        title Data Retrieved
+    body
+    p Table below consists of user data on user: #{user_name}
+    br
+    table
+        tr
+            td user id
+            td=  id
+        tr
+            td name
+            td= name
+        tr
+            td email
+            if (email == null)
+                td no email on system
+            else
+                td= email
+        tr
+            td html page
+            td 
+                a(href=html) #{user_name}'s page 
+        tr
+            td number of repos
+            td= repos
+        tr
+            td bio
+            if (bio == null)
+                td no bio stoed on system
+            else
+                td= bio
+        tr
+            td location of user
+            if (loc == null) 
+                td no location stored on system
+            else
+                td= loc
+        tr
+            td user type
+            td= user_type
+
+    br
+    br
+    a(href="/GIT_USER_DATA") Click here to search for another user....
