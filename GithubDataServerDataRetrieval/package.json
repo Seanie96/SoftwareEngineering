@@ -1,0 +1,17 @@
+{
+  "name": "githubdataserverdataretrieval",
+  "version": "1.0.0",
+  "description": "Node app to get github data on repositories of specific companies",
+  "main": "backend_github_data_retrieval_app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Sean McDonagh",
+  "license": "ISC",
+  "dependencies": {
+    "basic-auth": "^2.0.0",
+    "moment": "^2.19.2",
+    "mysql": "^2.15.0",
+    "request": "^2.83.0"
+  }
+}
