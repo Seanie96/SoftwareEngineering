@@ -5,7 +5,19 @@ from requests.auth import HTTPBasicAuth
 
 #insert_user_company method
 def insert_user_company(author_id, comp_id, repo_id, weeks, comp_user_exists):
-    if comp_user_exists == 1:
+    db = MySQLdb.connect("127.0.0.1",
+                         "username",
+                         "password",
+                         "github_data")
+    cursor = db.cursor()
+
+    find_comp_user = "SELECT * FROM company_user WHERE company_id = %d AND user_id = %d" % (comp_id, author_id);
+    cursor.execute(find_comp_user)
+    results = cursor.fetchall()
+
+    db.close()
+
+    if (len(results) == 0):
         comp_user_insert = "INSERT INTO company_user(company_id, user_id) VALUES(%d, %d)" % (comp_id, author_id)
         db = MySQLdb.connect("127.0.0.1",
                              "username",
@@ -46,17 +58,29 @@ db = MySQLdb.connect("127.0.0.1",
                     "username",
                     "password",
                     "github_data")
-companies = ['hubspot']
+#companies = ['google']
+#repositories = ['WebFundamentals', 'protobuf', 'openhtf', 'shaka-player', 'angle', 'skia-buildbot', 'skia', 'kythe', 'DirectXShaderCompiler', 'flatbuffers', 'ExoPlayer', 'boringssl', 'guava', 'ggrc-core', 'error-prone']
 
+#companies = ['facebook']
+#repositories = ['react-native', 'nuclide', 'buck', 'fbthrift', 'bistro', 'rocksdb', 'proxygen', 'fbzmq', 'folly', 'relay', 'react', 'openbmc', 'hhvm', 'reason', 'zstd']
+
+companies = ['github']
+repositories = ['linguist', 'dmca', 'VisualStudio', 'pages-gem', 'orchestrator', 'cmark', 'gh-ost', 'graphql-client', 'training-kit', 'backup-utils', 'hub', 'refined-github', 'ruby', 'incubator-airflow', 'choosealicense.com']
+
+#companies = ['IBM']
+#repositories = ['ubiquity', 'ubiquity-k8s', 'watson-discovery-analyze-data-breaches', 'wcs-ocaml', 'chatbot-deployer', 'acme-freight', 'rotisserie', 'CognitiveConcierge', 'BluePic', 'swift-enterprise-demo', 'openwhisk-serverless-apis', 'voice-of-the-customer', 'janusgraph-utils', 'metrics-collector-client-swift', 'ubiquity-docker-plugin']
+
+#companies = ['microsoft']
+#repositories = ['TSJS-lib-generator', 'AppCenter-SDK-Android', 'ChakraCore', 'CNTK', 'BotFramework-WebChat', 'vscode-docs', 'BusinessPlatformApps', 'pxt', 'dotnet', 'mwt-ds', 'sqltoolsservice', 'react-native-windows', 'edx-platform', 'vscode', 'AdaptiveCards']
 x  = 0
 for x in range(0, len(companies)):
     company = companies[x]
-    get_repos_url = "https://api.github.com/users/" + company + "/repos"
+    get_repos_url = "https://api.github.com/repos/" + company + "/" + repositories[0]
     r = requests.get(get_repos_url, auth=HTTPBasicAuth('Seanie96', 'Greeneyes96!'))
     comp_json = json.loads(r.text)
-    comp_id = comp_json[0]['owner']['id']
-    comp_name = comp_json[0]['owner']['login']
-    comp_url = comp_json[0]['owner']['html_url']
+    comp_id = comp_json['owner']['id']
+    comp_name = comp_json['owner']['login']
+    comp_url = comp_json['owner']['html_url']
 
     cursor = db.cursor()
 
@@ -70,10 +94,13 @@ for x in range(0, len(companies)):
 
     y = 0
 
-    for y in range(0, len(comp_json)):
-        repo_id = comp_json[y]['id']
-        repo_name = comp_json[y]['name']
-        repo_url = comp_json[y]['html_url']
+    for y in range(0, len(repositories)):
+        get_repos_url = "https://api.github.com/repos/" + company + "/" + repositories[y]
+        r = requests.get(get_repos_url, auth=HTTPBasicAuth('Seanie96', 'Greeneyes96!'))
+        comp_json = json.loads(r.text)
+        repo_id = comp_json['id']
+        repo_name = comp_json['name']
+        repo_url = comp_json['html_url']
 
         db = MySQLdb.connect("127.0.0.1",
                             "username",
@@ -87,7 +114,7 @@ for x in range(0, len(companies)):
         cursor.execute(repo_insert)
         db.commit()
         db.close()
-        get_contributors_url = "https://api.github.com/repos/" + str(comp_json[y]['full_name']) + "/stats/contributors"
+        get_contributors_url = "https://api.github.com/repos/" + str(comp_json['full_name']) + "/stats/contributors"
 
         r = requests.get(get_contributors_url, auth=HTTPBasicAuth('Seanie96', 'Greeneyes96!'))
 
