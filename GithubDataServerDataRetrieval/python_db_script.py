@@ -6,8 +6,8 @@ from requests.auth import HTTPBasicAuth
 #insert_user_company method
 def insert_user_company(author_id, comp_id, repo_id, weeks, comp_user_exists):
     db = MySQLdb.connect("127.0.0.1",
-                         "username",
-                         "password",
+                         "***************************",
+                         "*****************************************************",
                          "github_data")
     cursor = db.cursor()
 
