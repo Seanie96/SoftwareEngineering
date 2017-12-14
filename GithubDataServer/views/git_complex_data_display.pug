@@ -1,0 +1,142 @@
+extends layout
+block content
+    html
+        head
+            title Complex Data
+            script(data-require="d3@3.5.3", data-semver="3.5.3", src="//cdnjs.cloudflare.com/ajax/libs/d3/3.5.3/d3.js").
+            style
+                include ../public/stylesheets/d3style.css
+        body
+            script.
+                d3.csv('data/repos_ibm_commits.csv', function(data) {
+                    console.log(data);
+                    var header_names = d3.keys(data[0]);
+                    headers = header_names;
+                    console.log(header_names);
+                    data.forEach(function (d) {
+                        header_names.forEach(function(val) {
+                            d[val] = parseFloat(d[val]);
+                            console.log("value: " + d[val]);
+                        });
+                    });
+                    var index  = 0;
+                    var yHeader = {};
+                    header_names.forEach(function(d) {
+                        if(index != 0) {
+                            yHeader[d] = {column: d, name: d};
+                        }
+                        index++;
+                    });
+                    var chart = makeLineChart(data, 'Date', yHeader, {xAxis: 'Month', yAxis: 'Commits'});
+                    chart.bind("#chart-line2");
+                    chart.render();
+                });
+
+
+                d3.csv('data/repos_google_commits.csv', function(data) {
+                    console.log(data);
+                    var header_names = d3.keys(data[0]);
+                    headers = header_names;
+                    console.log(header_names);
+                    data.forEach(function (d) {
+                        header_names.forEach(function(val) {
+                            d[val] = parseFloat(d[val]);
+                            console.log("value: " + d[val]);
+                        });
+                    });
+                    var index  = 0;
+                    var yHeader = {};
+                    header_names.forEach(function(d) {
+                        if(index != 0) {
+                            yHeader[d] = {column: d, name: d};
+                        }
+                        index++;
+                    });
+                    var chart = makeLineChart(data, 'Date', yHeader, {xAxis: 'Month', yAxis: 'Commits'});
+                    chart.bind("#chart-line1");
+                    chart.render();
+                });
+
+
+                d3.csv('data/repos_github_commits.csv', function(data) {
+                    console.log(data);
+                    var header_names = d3.keys(data[0]);
+                    headers = header_names;
+                    console.log(header_names);
+                    data.forEach(function (d) {
+                        header_names.forEach(function(val) {
+                            d[val] = parseFloat(d[val]);
+                            console.log("value: " + d[val]);
+                        });
+                    });
+                    var index  = 0;
+                    var yHeader = {};
+                    header_names.forEach(function(d) {
+                        if(index != 0) {
+                            yHeader[d] = {column: d, name: d};
+                        }
+                        index++;
+                    });
+                    var chart = makeLineChart(data, 'Date', yHeader, {xAxis: 'Month', yAxis: 'Commits'});
+                    chart.bind("#chart-line3");
+                    chart.render();
+                });
+
+
+                d3.csv('data/repos_microsoft_commits.csv', function(data) {
+                    console.log(data);
+                    var header_names = d3.keys(data[0]);
+                    headers = header_names;
+                    console.log(header_names);
+                    data.forEach(function (d) {
+                        header_names.forEach(function(val) {
+                            d[val] = parseFloat(d[val]);
+                            console.log("value: " + d[val]);
+                        });
+                    });
+                    var index  = 0;
+                    var yHeader = {};
+                    header_names.forEach(function(d) {
+                        if(index != 0) {
+                            yHeader[d] = {column: d, name: d};
+                        }
+                        index++;
+                    });
+                    var chart = makeLineChart(data, 'Date', yHeader, {xAxis: 'Month', yAxis: 'Commits'});
+                    chart.bind("#chart-line4");
+                    chart.render();
+                });
+
+
+                d3.csv('data/repos_facebook_commits.csv', function(data) {
+                    console.log(data);
+                    var header_names = d3.keys(data[0]);
+                    headers = header_names;
+                    console.log(header_names);
+                    data.forEach(function (d) {
+                        header_names.forEach(function(val) {
+                            d[val] = parseFloat(d[val]);
+                            console.log("value: " + d[val]);
+                        });
+                    });
+                    var index  = 0;
+                    var yHeader = {};
+                    header_names.forEach(function(d) {
+                        if(index != 0) {
+                            yHeader[d] = {column: d, name: d};
+                        }
+                        index++;
+                    });
+                    var chart = makeLineChart(data, 'Date', yHeader, {xAxis: 'Month', yAxis: 'Commits'});
+                    chart.bind("#chart-line5");
+                    chart.render();
+                });
+                
+            script
+                include ../public/javascripts/d3script.js
+
+            div(class="chart-wrapper" id="chart-line1")
+            div(class="chart-wrapper" id="chart-line2")
+            div(class="chart-wrapper" id="chart-line3")
+            div(class="chart-wrapper" id="chart-line4")
+            div(class="chart-wrapper" id="chart-line5")

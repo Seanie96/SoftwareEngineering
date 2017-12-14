@@ -1,9 +1,8 @@
 var express = require('express');
 var router = express.Router();
 
-router.get('/GIT_COMPLEX_DATA', function(req, res, next) {
-//    var
-//    res.render('complex_data', { req.body. });
+router.get('/', function(req, res, next) {
+    res.render('git_complex_data_display', {});
 });
 
 module.exports = router;

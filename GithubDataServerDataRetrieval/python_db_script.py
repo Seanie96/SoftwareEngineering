@@ -2,6 +2,7 @@
 
 import MySQLdb, requests, json, datetime
 from requests.auth import HTTPBasicAuth
+import time
 
 #insert_user_company method
 def insert_user_company(author_id, comp_id, repo_id, weeks, comp_user_exists):
@@ -24,8 +25,11 @@ def insert_user_company(author_id, comp_id, repo_id, weeks, comp_user_exists):
                              "password",
                              "github_data")
         cursor = db.cursor()
-        cursor.execute(comp_user_insert)
-        db.commit()
+        try:
+            cursor.execute(comp_user_insert)
+            db.commit()
+        except (MySQLdb.Error, MySQLdb.Warning) as e:
+            print(e)
         db.close()
 
     insert_commits(author_id, repo_id, weeks)
@@ -48,8 +52,11 @@ def insert_commits(author_id, repo_id, weeks):
                             "password",
                             "github_data")
         cursor = db.cursor()
-        cursor.execute(insert_commits)
-        db.commit()
+        try:
+            cursor.execute(insert_commits)
+            db.commit()
+        except(MySQLdb.Error, MySQLdb.Warning) as e:
+            print(e)
         db.close()
         j = j + 1
 
@@ -64,19 +71,23 @@ db = MySQLdb.connect("127.0.0.1",
 #companies = ['facebook']
 #repositories = ['react-native', 'nuclide', 'buck', 'fbthrift', 'bistro', 'rocksdb', 'proxygen', 'fbzmq', 'folly', 'relay', 'react', 'openbmc', 'hhvm', 'reason', 'zstd']
 
-companies = ['github']
-repositories = ['linguist', 'dmca', 'VisualStudio', 'pages-gem', 'orchestrator', 'cmark', 'gh-ost', 'graphql-client', 'training-kit', 'backup-utils', 'hub', 'refined-github', 'ruby', 'incubator-airflow', 'choosealicense.com']
+#companies = ['github']
+#repositories = ['linguist', 'dmca', 'VisualStudio', 'pages-gem', 'orchestrator', 'cmark', 'gh-ost', 'graphql-client', 'training-kit', 'backup-utils', 'hub', 'refined-github', 'ruby', 'incubator-airflow', 'choosealicense.com']
 
 #companies = ['IBM']
+#repositories = ['chatbot-deployer', 'acme-freight', 'rotisserie', 'CognitiveConcierge', 'BluePic', 'swift-enterprise-demo', 'openwhisk-serverless-apis', 'voice-of-the-customer', 'janusgraph-utils', 'metrics-collector-client-swift', 'ubiquity-docker-plugin']
 #repositories = ['ubiquity', 'ubiquity-k8s', 'watson-discovery-analyze-data-breaches', 'wcs-ocaml', 'chatbot-deployer', 'acme-freight', 'rotisserie', 'CognitiveConcierge', 'BluePic', 'swift-enterprise-demo', 'openwhisk-serverless-apis', 'voice-of-the-customer', 'janusgraph-utils', 'metrics-collector-client-swift', 'ubiquity-docker-plugin']
+#repositories = ['swift-enterprise-demo', 'openwhisk-serverless-apis', 'voice-of-the-customer', 'janusgraph-utils', 'metrics-collector-client-swift', 'ubiquity-docker-plugin']
 
-#companies = ['microsoft']
-#repositories = ['TSJS-lib-generator', 'AppCenter-SDK-Android', 'ChakraCore', 'CNTK', 'BotFramework-WebChat', 'vscode-docs', 'BusinessPlatformApps', 'pxt', 'dotnet', 'mwt-ds', 'sqltoolsservice', 'react-native-windows', 'edx-platform', 'vscode', 'AdaptiveCards']
+companies = ['microsoft']
+repositories = ['TSJS-lib-generator', 'AppCenter-SDK-Android', 'ChakraCore', 'CNTK', 'BotFramework-WebChat', 'vscode-docs', 'BusinessPlatformApps', 'pxt', 'dotnet', 'mwt-ds', 'sqltoolsservice', 'react-native-windows', 'edx-platform', 'vscode', 'AdaptiveCards']
+
 x  = 0
+
 for x in range(0, len(companies)):
     company = companies[x]
     get_repos_url = "https://api.github.com/repos/" + company + "/" + repositories[0]
-    r = requests.get(get_repos_url, auth=HTTPBasicAuth('Seanie96', 'Greeneyes96!'))
+    r = requests.get(get_repos_url)
     comp_json = json.loads(r.text)
     comp_id = comp_json['owner']['id']
     comp_name = comp_json['owner']['login']
@@ -95,12 +106,16 @@ for x in range(0, len(companies)):
     y = 0
 
     for y in range(0, len(repositories)):
+        time.sleep(10)
         get_repos_url = "https://api.github.com/repos/" + company + "/" + repositories[y]
         r = requests.get(get_repos_url, auth=HTTPBasicAuth('Seanie96', 'Greeneyes96!'))
+        print(r.text)
         comp_json = json.loads(r.text)
         repo_id = comp_json['id']
         repo_name = comp_json['name']
         repo_url = comp_json['html_url']
+
+        time.sleep(10)
 
         db = MySQLdb.connect("127.0.0.1",
                             "username",
@@ -110,14 +125,16 @@ for x in range(0, len(companies)):
         repo_insert = "INSERT INTO repository(id, name, url, company_id) VALUES(%d, '%s', '%s', %d)" % (repo_id, str(repo_name),str(repo_url), comp_id)
 
         print repo_insert
-
-        cursor.execute(repo_insert)
-        db.commit()
+        try:
+            cursor.execute(repo_insert)
+            db.commit()
+        except(MySQLdb.Error, MySQLdb.Warning) as e:
+            print(e)
         db.close()
+        time.sleep(10)
         get_contributors_url = "https://api.github.com/repos/" + str(comp_json['full_name']) + "/stats/contributors"
-
-        r = requests.get(get_contributors_url, auth=HTTPBasicAuth('Seanie96', 'Greeneyes96!'))
-
+        r = requests.get(get_contributors_url)
+        print(r.text)
         cont_json = json.loads(r.text)
         z = 0
         for z in range(0, len(cont_json)):
@@ -132,8 +149,11 @@ for x in range(0, len(companies)):
             cursor = db.cursor()
 
             find_cont = "SELECT * FROM user WHERE name = '%s'" % (str(author['login']));
-            cursor.execute(find_cont)
-            results = cursor.fetchall()
+            try:
+                cursor.execute(find_cont)
+                results = cursor.fetchall()
+            except(MySQLdb.Error, MySQLdb.Warning) as e:
+                print(e)
 
             db.close()
 
@@ -147,14 +167,15 @@ for x in range(0, len(companies)):
                                     "github_data")
                 cursor = db.cursor()
                 user_insert = "INSERT INTO user(id, name, url) VALUES(%d, '%s', '%s')" % (author['id'], str(author['login']), str(author['html_url']))
-                cursor.execute(user_insert)
-                db.commit()
+                try:
+                    cursor.execute(user_insert)
+                    db.commit()
+                except(MySQLdb.Error, MySQLdb.Warning) as e:
+                    print(e)
                 db.close()
 
             insert_user_company(author['id'], comp_id, repo_id, weeks, comp_user_exists)
 
             z = z + 1
-
         y = y + 1
-
     x = x + 1
