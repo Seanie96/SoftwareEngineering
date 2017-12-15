@@ -4,39 +4,16 @@ block content
         head
             title Complex Data
             script(data-require="d3@3.5.3", data-semver="3.5.3", src="//cdnjs.cloudflare.com/ajax/libs/d3/3.5.3/d3.js").
+            script(src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js").
             style
                 include ../public/stylesheets/d3style.css
         body
             script.
-                d3.csv('data/repos_ibm_commits.csv', function(data) {
-                    console.log(data);
-                    var header_names = d3.keys(data[0]);
-                    headers = header_names;
-                    console.log(header_names);
-                    data.forEach(function (d) {
-                        header_names.forEach(function(val) {
-                            d[val] = parseFloat(d[val]);
-                            console.log("value: " + d[val]);
-                        });
-                    });
-                    var index  = 0;
-                    var yHeader = {};
-                    header_names.forEach(function(d) {
-                        if(index != 0) {
-                            yHeader[d] = {column: d, name: d};
-                        }
-                        index++;
-                    });
-                    var chart = makeLineChart(data, 'Date', yHeader, {xAxis: 'Month', yAxis: 'Commits'});
-                    chart.bind("#chart-line2");
-                    chart.render();
-                });
-
-
+                var googleChart, facebookChart, githubChart, microsoftChart, ibmChart, averagesChart;
                 d3.csv('data/repos_google_commits.csv', function(data) {
                     console.log(data);
                     var header_names = d3.keys(data[0]);
-                    headers = header_names;
+                    headers = header_names;	
                     console.log(header_names);
                     data.forEach(function (d) {
                         header_names.forEach(function(val) {
@@ -52,66 +29,16 @@ block content
                         }
                         index++;
                     });
-                    var chart = makeLineChart(data, 'Date', yHeader, {xAxis: 'Month', yAxis: 'Commits'});
-                    chart.bind("#chart-line1");
-                    chart.render();
+                    googleChart = makeLineChart(data, 'Date', yHeader, {xAxis: 'Month', yAxis: 'Commits'});
+                    googleChart.bind("#chart-line1");
+                    googleChart.render();
                 });
 
-
-                d3.csv('data/repos_github_commits.csv', function(data) {
-                    console.log(data);
-                    var header_names = d3.keys(data[0]);
-                    headers = header_names;
-                    console.log(header_names);
-                    data.forEach(function (d) {
-                        header_names.forEach(function(val) {
-                            d[val] = parseFloat(d[val]);
-                            console.log("value: " + d[val]);
-                        });
-                    });
-                    var index  = 0;
-                    var yHeader = {};
-                    header_names.forEach(function(d) {
-                        if(index != 0) {
-                            yHeader[d] = {column: d, name: d};
-                        }
-                        index++;
-                    });
-                    var chart = makeLineChart(data, 'Date', yHeader, {xAxis: 'Month', yAxis: 'Commits'});
-                    chart.bind("#chart-line3");
-                    chart.render();
-                });
-
-
-                d3.csv('data/repos_microsoft_commits.csv', function(data) {
-                    console.log(data);
-                    var header_names = d3.keys(data[0]);
-                    headers = header_names;
-                    console.log(header_names);
-                    data.forEach(function (d) {
-                        header_names.forEach(function(val) {
-                            d[val] = parseFloat(d[val]);
-                            console.log("value: " + d[val]);
-                        });
-                    });
-                    var index  = 0;
-                    var yHeader = {};
-                    header_names.forEach(function(d) {
-                        if(index != 0) {
-                            yHeader[d] = {column: d, name: d};
-                        }
-                        index++;
-                    });
-                    var chart = makeLineChart(data, 'Date', yHeader, {xAxis: 'Month', yAxis: 'Commits'});
-                    chart.bind("#chart-line4");
-                    chart.render();
-                });
-
-
+                var googleChart, facebookChart, githubChart, microsoftChart, ibmChart, averagesChart;
                 d3.csv('data/repos_facebook_commits.csv', function(data) {
                     console.log(data);
                     var header_names = d3.keys(data[0]);
-                    headers = header_names;
+                    headers = header_names;	
                     console.log(header_names);
                     data.forEach(function (d) {
                         header_names.forEach(function(val) {
@@ -127,16 +54,214 @@ block content
                         }
                         index++;
                     });
-                    var chart = makeLineChart(data, 'Date', yHeader, {xAxis: 'Month', yAxis: 'Commits'});
-                    chart.bind("#chart-line5");
-                    chart.render();
+                    facebookChart = makeLineChart(data, 'Date', yHeader, {xAxis: 'Month', yAxis: 'Commits'});
+                    facebookChart.bind("#chart-line2");
+                    facebookChart.render();
                 });
-                
-            script
-                include ../public/javascripts/d3script.js
+                var googleChart, facebookChart, githubChart, microsoftChart, ibmChart, averagesChart;
+                d3.csv('data/repos_github_commits.csv', function(data) {
+                    console.log(data);
+                    var header_names = d3.keys(data[0]);
+                    headers = header_names;	
+                    console.log(header_names);
+                    data.forEach(function (d) {
+                        header_names.forEach(function(val) {
+                            d[val] = parseFloat(d[val]);
+                            console.log("value: " + d[val]);
+                        });
+                    });
+                    var index  = 0;
+                    var yHeader = {};
+                    header_names.forEach(function(d) {
+                        if(index != 0) {
+                            yHeader[d] = {column: d, name: d};
+                        }
+                        index++;
+                    });
+                    githubChart = makeLineChart(data, 'Date', yHeader, {xAxis: 'Month', yAxis: 'Commits'});
+                    githubChart.bind("#chart-line4");
+                    githubChart.render();
+                });
+                var googleChart, facebookChart, githubChart, microsoftChart, ibmChart, averagesChart;
+                d3.csv('data/repos_microsoft_commits.csv', function(data) {
+                    console.log(data);
+                    var header_names = d3.keys(data[0]);
+                    headers = header_names;	
+                    console.log(header_names);
+                    data.forEach(function (d) {
+                        header_names.forEach(function(val) {
+                            d[val] = parseFloat(d[val]);
+                            console.log("value: " + d[val]);
+                        });
+                    });
+                    var index  = 0;
+                    var yHeader = {};
+                    header_names.forEach(function(d) {
+                        if(index != 0) {
+                            yHeader[d] = {column: d, name: d};
+                        }
+                        index++;
+                    });
+                    microsoftChart = makeLineChart(data, 'Date', yHeader, {xAxis: 'Month', yAxis: 'Commits'});
+                    microsoftChart.bind("#chart-line3");
+                    microsoftChart.render();
+                });
+                var googleChart, facebookChart, githubChart, microsoftChart, ibmChart, averagesChart;
+                d3.csv('data/repos_ibm_commits.csv', function(data) {
+                    console.log(data);
+                    var header_names = d3.keys(data[0]);
+                    headers = header_names;	
+                    console.log(header_names);
+                    data.forEach(function (d) {
+                        header_names.forEach(function(val) {
+                            d[val] = parseFloat(d[val]);
+                            console.log("value: " + d[val]);
+                        });
+                    });
+                    var index  = 0;
+                    var yHeader = {};
+                    header_names.forEach(function(d) {
+                        if(index != 0) {
+                            yHeader[d] = {column: d, name: d};
+                        }
+                        index++;
+                    });
+                    ibmChart = makeLineChart(data, 'Date', yHeader, {xAxis: 'Month', yAxis: 'Commits'});
+                    ibmChart.bind("#chart-line5");
+                    ibmChart.render();
+                });
+                var googleChart, facebookChart, githubChart, microsoftChart, ibmChart, averagesChart;
+                d3.csv('data/average_over_all_repos.csv', function(data) {
+                    console.log(data);
+                    var header_names = d3.keys(data[0]);
+                    headers = header_names;	
+                    console.log(header_names);
+                    data.forEach(function (d) {
+                        header_names.forEach(function(val) {
+                            d[val] = parseFloat(d[val]);
+                            console.log("value: " + d[val]);
+                        });
+                    });
+                    var index  = 0;
+                    var yHeader = {};
+                    header_names.forEach(function(d) {
+                        if(index != 0) {
+                            yHeader[d] = {column: d, name: d};
+                        }
+                        index++;
+                    });
+                    averagesChart = makeLineChart(data, 'Date', yHeader, {xAxis: 'Month', yAxis: 'Commits'});
+                    averagesChart.bind("#chart-line6");
+                    averagesChart.render();
+                });
+                $(function() {
+                    console.log("Added hidden attributes!!");
+                    $("#chart-line1").attr("hidden", "true");
+                    $("#chart-line2").attr("hidden", "true");
+                    $("#chart-line3").attr("hidden", "true");
+                    $("#chart-line4").attr("hidden", "true");
+                    $("#chart-line5").attr("hidden", "true");
+                    $("#chart-line6").attr("hidden", "true");
 
-            div(class="chart-wrapper" id="chart-line1")
-            div(class="chart-wrapper" id="chart-line2")
-            div(class="chart-wrapper" id="chart-line3")
-            div(class="chart-wrapper" id="chart-line4")
-            div(class="chart-wrapper" id="chart-line5")
+                    $("#google").click(function(elm) {
+                        var attr = $("#chart-line1").attr("hidden");
+                        if(typeof(attr) !== typeof undefined && attr !== false) {
+                            $("#chart-line1").removeAttr("hidden");
+                        }   else    {
+                            $("#chart-line1").attr("hidden", "true");
+                        }
+                        $("#chart-line1").empty();
+                        googleChart.bind("#chart-line1");
+                        googleChart.render();
+                    });
+                    $("#facebook").click(function(elm) {
+                        var attr = $("#chart-line2").attr("hidden");
+                        if(typeof(attr) !== typeof undefined && attr !== false) {
+                            $("#chart-line2").removeAttr("hidden");
+                        }   else    {
+                            $("#chart-line2").attr("hidden", "true");
+                        }
+                        $("#chart-line2").empty();
+                        facebookChart.bind("#chart-line2");
+                        facebookChart.render();
+                    });
+                    $("#microsoft").click(function(elm) {
+                        var attr = $("#chart-line3").attr("hidden");
+                        if(typeof(attr) !== typeof undefined && attr !== false) {
+                            $("#chart-line3").removeAttr("hidden");
+                        }   else    {
+                            $("#chart-line3").attr("hidden", "true");
+                        }
+                        $("#chart-line3").empty();
+                        microsoftChart.bind("#chart-line3");
+                        microsoftChart.render();
+                    });
+                    $("#github").click(function(elm) {
+                        var attr = $("#chart-line4").attr("hidden");
+                        if(typeof(attr) !== typeof undefined && attr !== false) {
+                            $("#chart-line4").removeAttr("hidden");
+                        }   else    {
+                            $("#chart-line4").attr("hidden", "true");
+                        }
+                        $("#chart-line4").empty();
+                        githubChart.bind("#chart-line4");
+                        githubChart.render();
+                    });
+                    $("#ibm").click(function(elm) {
+                        var attr = $("#chart-line5").attr("hidden");
+                        if(typeof(attr) !== typeof undefined && attr !== false) {
+                            $("#chart-line5").removeAttr("hidden");
+                        }   else    {
+                            $("#chart-line5").attr("hidden", "true");
+                        }
+                        $("#chart-line5").empty();
+                        ibmChart.bind("#chart-line5");
+                        ibmChart.render();
+                    });
+                    $("#overall_average").click(function(elm) {
+                        var attr = $("#chart-line6").attr("hidden");
+                        if(typeof(attr) !== typeof undefined && attr !== false) {
+                            $("#chart-line6").removeAttr("hidden");
+                        }   else    {
+                            $("#chart-line6").attr("hidden", "true");
+                        }
+                        $("#chart-line6").empty();
+                        averagesChart.bind("#chart-line6");
+                        averagesChart.render();
+                    });
+                });
+
+        script
+            include ../public/javascripts/d3script.js
+        h1(align="center") Social Graph
+        br
+        h3(align="center") Introduction/Description
+        p(class="descriptive_text", align="center") This page consists of data regarding the number of commits made to specific repositories belonging to the following companies: Google, Facebook, IBM, Github, Microsoft. To see the number of commits made by a specific company, to a perticular repository, then click on the company. The graph will illustrate the month, numbered from 1 to 12 (January - December), and the associated number of commits made in that month to that repository. The question that these analytics is answering is what is the most common month for developers, who are apart of an organisation, to commit/write code and push to a repository.
+        br
+        h3(align="center") Tools used
+        p(align="center") Python was used to query the github api. The relevant data was then stored in a mysql database. The data was then transferred onto a csv flat file, so that the data could be accessed by d3, the graphing library I'm using. The backend was built using nodejs.
+        br
+        h3(align="center") Conclusions from Data
+        p(align="center") From the final graph, Average Over Companies, which is a graph that has the average commits for each company over the 12 months and the average commits over all the companies, I conclude that the most prominant month to commit/push code is Month 10 (October) with 372 commits. Followed by Month 7 (August) with 364 commits, and then Month 3 (March) with 348. The month with lease number of commits on average, is December. Which makes sense, as companies begin to die down entering the Christmas period.
+        br
+        h3(align="center") How to use
+        p(align="center") To see a graph, click on one of the companies, or the final graph containing the averages of each company and the average of those averages. Scroll your mouse over the graph in order to see the number of commits of each repo/company for a given month.
+        br
+        h3(align="center") Problems
+        p(align="center") The only problem with the graphs is that with some of them, mainly google and microsoft, the values of some of the data points are notreadible, due to the pverwriting of the values of other data points. I don't really see this a serious problem, because the final graph is the only graph that I draw my conclusions from. The other graphs are just additives to see how many commits are made on average to the repositories of a given company.
+
+        br
+        br
+
+        a(href="#", id="google", class="btn-gradient red block") Google
+        div(class="chart-wrapper", id="chart-line1")
+        a(href="#", id="facebook", class="btn-gradient red block") Facebook
+        div(class="chart-wrapper", id="chart-line2")
+        a(href="#", id="microsoft", class="btn-gradient red block") Microsoft
+        div(class="chart-wrapper", id="chart-line3")
+        a(href="#", id="github", class="btn-gradient red block") Github
+        div(class="chart-wrapper", id="chart-line4")
+        a(href="#", id="ibm", class="btn-gradient red block") IBM
+        div(class="chart-wrapper", id="chart-line5")
+        a(href="#", id="overall_average", class="btn-gradient red block") Average over companies
+        div(class="chart-wrapper", id="chart-line6")

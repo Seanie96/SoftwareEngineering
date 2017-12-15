@@ -5,14 +5,14 @@ import csv
 import datetime
 from datetime import timedelta
 
-ofile  = open('repos_github2_commits.csv', "wb")
+ofile  = open('repos_github_commits.csv', "wb")
 writer = csv.writer(ofile, delimiter=',', quotechar='"', quoting=csv.QUOTE_ALL)
 
-#writer.writerow(['Date', 'hhvm', 'react', 'react-native', 'zstd'])
-#writer.writerow(['Date', 'ggrc-core', 'skia', 'skia-buildbot', 'WebFundamentals', 'flatbuffers', 'guava', 'ExoPlayer', 'error-prone', 'angle', 'protobuf', 'shaka-player', 'kythe', 'openhtf', 'boringssl', 'DirectXShaderCompiler'])
-#writer.writerow(['Date', 'ubiquity'])
-#writer.writerow(['Date', 'dotnet', 'CNTK', 'react-native-windows', 'ChakraCore', 'pxt', 'BotFramework-WebChat', 'sqltoolsservice', 'BusinessPlatformApps'])
-writer.writerow(['Date', 'hub', 'dmca', 'linguist', 'pages-gem'])
+#writer.writerow(['Date', 'hhvm', 'react', 'react-native', 'zstd', 'Average'])
+#writer.writerow(['Date', 'ggrc-core', 'skia', 'skia-buildbot', 'WebFundamentals', 'flatbuffers', 'guava', 'ExoPlayer', 'error-prone', 'angle', 'protobuf', 'shaka-player', 'kythe', 'openhtf', 'boringssl', 'DirectXShaderCompiler', 'Average'])
+#writer.writerow(['Date', 'ubiquity', 'Average'])
+#writer.writerow(['Date', 'dotnet', 'CNTK', 'react-native-windows', 'ChakraCore', 'pxt', 'BotFramework-WebChat', 'sqltoolsservice', 'BusinessPlatformApps', 'Average'])
+writer.writerow(['Date', 'hub', 'dmca', 'linguist', 'pages-gem', 'Average'])
 db = MySQLdb.connect("127.0.0.1",
 			"username",
 			"password",
@@ -63,15 +63,15 @@ i = 1
 while (i < 13):
     string = "%d" % (i)
     j = 0
+    average = 0
     for j in range(0, len(commits_list)):
         string = "%s,%s" % (string, commits_list[j][i - 1])
+        average += commits_list[j][i - 1]
         j = j + 1
-    string = string.replace("\"","")
+    average = average / len(commits_list)
     st = string.split(",")
+    st.insert(len(st), average)
     writer.writerow(st)
     i = i + 1
 #    date_curr = date_curr + datetime.timedelta(days = 7)
-data = [1, 2 , 3 , 4]
-writer.writerow(data)
-
 ofile.close()
